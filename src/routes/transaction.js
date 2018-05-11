@@ -1,6 +1,6 @@
 import express from 'express';
 
-import { Transaction } from '../model';
+import { Transaction } from '../models';
 
 const router = express.Router();
 
@@ -27,9 +27,7 @@ router.post('/transaction', async (req, res) => {
  * *************************************
 */
 router.get('/transaction', async (req, res) =>
-  Transaction.findAll().then(data => {
-    return res.json({ success: true, data });
-  })
+  Transaction.findAll().then(data => res.json({ success: true, data }))
 );
 
 export default router;
