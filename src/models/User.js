@@ -34,13 +34,11 @@ const User = (sequelize, DataTypes) => {
       unique: true
     }
   });
+
   /* eslint-disable */
-  // TODO: Association with user
-  /*
   Model.associate = function(models) {
-    this.Greenhousess = this.belongsToMany(models.Greenhouse, { through: 'userGreenhouse' });
+    this.hasMany(models.Greenhouse, { foreignKey: 'uid' });
   };
-  */
 
   Model.beforeSave(async user => {
     if (user.changed('password')) {
@@ -58,7 +56,7 @@ const User = (sequelize, DataTypes) => {
   };
 
   Model.prototype.getJWT = function() {
-    return `Bearer ${jwt.sign({ user_id: this.id, firstname: this.firstname }, config.secret, {
+    return `JWT ${jwt.sign({ uid: this.id, firstname: this.firstname }, config.secret, {
       expiresIn: 1204800
     })}`;
   };

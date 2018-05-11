@@ -1,17 +1,20 @@
-import { User } from '../models';
+import db from '../models';
 
+const { User } = db;
 const roleAuth = roles => {
   const roleAuthorization = async (req, res, next) => {
     const { user } = req;
-    const foundUser = await User.findById(user.id);
+    const foundUser = await User.findOne({ where: { id: user.id } });
     if (!foundUser) {
-      res.status(422).json({ error: 'No user found.' });
+      return res.status(422).json({ error: 'No user found.' });
     }
     if (roles.indexOf(foundUser.role) > -1) {
       return next();
     }
 
-    res.status(401).json({ status: false, error: 'You are not authorized to view this content' });
+    return res
+      .status(401)
+      .json({ status: false, error: 'You are not authorized to view this content' });
   };
   return roleAuthorization;
 };

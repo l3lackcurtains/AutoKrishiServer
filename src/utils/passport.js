@@ -1,9 +1,10 @@
 import Jwt from 'passport-jwt';
 
-import { User } from '../models';
+import db from '../models';
 import config from './config';
 
 const { Strategy, ExtractJwt } = Jwt;
+const { User } = db;
 
 const jwtAuth = passport => {
   const options = {};
@@ -12,11 +13,11 @@ const jwtAuth = passport => {
   passport.use(
     new Strategy(options, async (jwtPayload, done) => {
       try {
-        const user = await User.findById(jwtPayload.id);
-        if (user) {
-          return done(null, user);
+        const user = await User.findOne({ where: { id: jwtPayload.uid } });
+        if (!user) {
+          return done(null, false);
         }
-        return done(null, false);
+        return done(null, user);
       } catch (e) {
         throw new Error(e);
       }

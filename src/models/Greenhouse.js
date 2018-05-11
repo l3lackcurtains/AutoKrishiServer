@@ -19,13 +19,6 @@ const Greenhouse = (sequelize, DataTypes) => {
     }
   });
 
-  // TODO: Association with user
-  /* 
-  Model.associate = models => {
-    this.Companies = this.belongsToMany(models.Company, { through: 'GreenhouseCompany' });
-  };
-  */
-
   return Model;
 };
 

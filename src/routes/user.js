@@ -1,4 +1,6 @@
 import express from 'express';
+import passport from 'passport';
+
 import db from '../models';
 
 const router = express.Router();
@@ -119,7 +121,7 @@ router.post('/authenticate', (req, res) => {
  * Get Users List
  * *************************************
 */
-router.get('/users', (req, res) =>
+router.get('/users', passport.authenticate('jwt', { session: false }), (req, res) =>
   User.sync().then(async () => {
     try {
       const users = await User.findAll();

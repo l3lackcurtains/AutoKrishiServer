@@ -12,6 +12,7 @@ const { Greenhouse } = db;
 router.post('/greenhouses', async (req, res) => {
   // Request Validation
   req.check('name', 'Name field is empty.').notEmpty();
+  req.check('uid', 'User ID field is empty.').notEmpty();
   const errors = req.validationErrors();
   if (errors) {
     const messages = [];
