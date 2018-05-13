@@ -1,5 +1,5 @@
-const Greenhouse = (sequelize, DataTypes) => {
-  const Model = sequelize.define('Greenhouse', {
+const MicroController = (sequelize, DataTypes) => {
+  const Model = sequelize.define('MicroController', {
     name: {
       type: DataTypes.STRING,
       notEmpty: true
@@ -16,10 +16,10 @@ const Greenhouse = (sequelize, DataTypes) => {
 
   /* eslint-disable */
   Model.associate = function(models) {
-    this.hasMany(models.MicroController, { foreignKey: 'gid' });
+    this.hasMany(models.Sensor, { foreignKey: 'mid' });
   };
 
   return Model;
 };
 
-export default Greenhouse;
+export default MicroController;

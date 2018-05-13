@@ -2,17 +2,17 @@ import express from 'express';
 import db from '../models';
 
 const router = express.Router();
-const { Greenhouse } = db;
+const { Record } = db;
 
 /*
  ***************************************
- * Post greenhouse
+ * Post record
  * *************************************
 */
-router.post('/greenhouses', async (req, res) => {
+router.post('/records', async (req, res) => {
   // Request Validation
   req.check('name', 'Name field is empty.').notEmpty();
-  req.check('uid', 'User ID field is empty.').notEmpty();
+  req.check('sid', 'Sensor ID field is empty.').notEmpty();
   const errors = req.validationErrors();
   if (errors) {
     const messages = [];
@@ -27,24 +27,24 @@ router.post('/greenhouses', async (req, res) => {
     });
   }
 
-  return Greenhouse.sync().then(async () => {
-    const greenhouseData = req.body;
+  return Record.sync().then(async () => {
+    const recordData = req.body;
     try {
-      const postGreenhouse = await Greenhouse.create(greenhouseData);
-      if (!postGreenhouse) {
+      const postRecord = await Record.create(recordData);
+      if (!postRecord) {
         return res.json({
           success: false,
-          message: "Greenhouse couldn't be posted."
+          message: "Record couldn't be posted."
         });
       }
       return res.json({
         success: true,
-        message: 'Greenhouse successfully registered.'
+        message: 'Record successfully registered.'
       });
     } catch (e) {
       return res.json({
         success: false,
-        message: "Greenhouse couldn't be posted.",
+        message: "Record couldn't be posted.",
         error: e
       });
     }
@@ -53,28 +53,28 @@ router.post('/greenhouses', async (req, res) => {
 
 /*
  ***************************************
- * Get Greenhouses List
+ * Get Records List
  * *************************************
 */
-router.get('/greenhouses', (req, res) =>
-  Greenhouse.sync().then(async () => {
+router.get('/records', (req, res) =>
+  Record.sync().then(async () => {
     try {
-      const greenhouses = await Greenhouse.findAll();
-      if (!greenhouses) {
+      const records = await Record.findAll();
+      if (!records) {
         return res.json({
           success: false,
-          message: "Greenhouses couldn't be fetched."
+          message: "Records couldn't be fetched."
         });
       }
       return res.json({
         success: true,
-        message: 'Greenhouses successfully fetched.',
-        data: greenhouses
+        message: 'Records successfully fetched.',
+        data: records
       });
     } catch (e) {
       return res.json({
         success: false,
-        message: "Greenhouses couldn't be fetched.",
+        message: "Records couldn't be fetched.",
         error: e
       });
     }
@@ -83,28 +83,28 @@ router.get('/greenhouses', (req, res) =>
 
 /*
  ***************************************
- * Get Single Greenhouses
+ * Get Single Records
  * *************************************
 */
-router.get('/greenhouses/:id', (req, res) =>
-  Greenhouse.sync().then(async () => {
+router.get('/records/:id', (req, res) =>
+  Record.sync().then(async () => {
     try {
-      const greenhouses = await Greenhouse.findOne({ where: { id: req.params.id } });
-      if (!greenhouses) {
+      const records = await Record.findOne({ where: { id: req.params.id } });
+      if (!records) {
         return res.json({
           success: false,
-          message: "Greenhouse couldn't be fetched."
+          message: "Record couldn't be fetched."
         });
       }
       return res.json({
         success: true,
-        message: 'Greenhouse successfully fetched.',
-        data: greenhouses
+        message: 'Record successfully fetched.',
+        data: records
       });
     } catch (e) {
       return res.json({
         success: false,
-        message: "Greenhouse couldn't be fetched.",
+        message: "Record couldn't be fetched.",
         error: e
       });
     }
@@ -113,26 +113,26 @@ router.get('/greenhouses/:id', (req, res) =>
 
 /*
  ***************************************
- * delete greenhouse
+ * delete record
  * *************************************
 */
-router.delete('/greenhouses/:id', async (req, res) => {
+router.delete('/records/:id', async (req, res) => {
   try {
-    const deleteGreenhouse = await Greenhouse.destroy({ where: { id: req.params.id } });
-    if (!deleteGreenhouse) {
+    const deleteRecord = await Record.destroy({ where: { id: req.params.id } });
+    if (!deleteRecord) {
       return res.json({
         success: false,
-        message: "Greenhouse couldn't be deleted."
+        message: "Record couldn't be deleted."
       });
     }
     return res.json({
       success: true,
-      message: 'Greenhouse successfully deleted.'
+      message: 'Record successfully deleted.'
     });
   } catch (e) {
     return res.json({
       success: false,
-      message: "Greenhouse couldn't be deleted.",
+      message: "Record couldn't be deleted.",
       error: e
     });
   }
@@ -140,32 +140,32 @@ router.delete('/greenhouses/:id', async (req, res) => {
 
 /*
  ***************************************
- * Update greenhouse
+ * Update record
  * *************************************
 */
-router.put('/greenhouses/:id', async (req, res) => {
+router.put('/records/:id', async (req, res) => {
   try {
-    const updatedGreenhouse = await Greenhouse.update(
+    const updatedRecord = await Record.update(
       { firstname: 'Milan Poudel' },
       { where: { id: req.params.id } }
     );
-    if (!updatedGreenhouse) {
+    if (!updatedRecord) {
       return res.json({
         success: false,
-        message: "Greenhouse couldn't be updated."
+        message: "Record couldn't be updated."
       });
     }
-    return Greenhouse.findOne({ where: { id: req.params.id } }).then(greenhouse =>
+    return Record.findOne({ where: { id: req.params.id } }).then(record =>
       res.json({
         success: true,
-        message: 'Greenhouse successfully updated.',
-        data: greenhouse
+        message: 'Record successfully updated.',
+        data: record
       })
     );
   } catch (e) {
     return res.json({
       success: false,
-      message: "Greenhouse couldn't be updated.",
+      message: "Record couldn't be updated.",
       error: e
     });
   }

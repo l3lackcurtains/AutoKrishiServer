@@ -5,11 +5,6 @@ import config from '../utils/config';
 
 const User = (sequelize, DataTypes) => {
   const Model = sequelize.define('User', {
-    id: {
-      autoIncrement: true,
-      primaryKey: true,
-      type: DataTypes.INTEGER
-    },
     firstname: {
       type: DataTypes.STRING,
       notEmpty: true

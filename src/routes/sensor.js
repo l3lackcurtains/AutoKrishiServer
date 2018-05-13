@@ -2,17 +2,17 @@ import express from 'express';
 import db from '../models';
 
 const router = express.Router();
-const { Greenhouse } = db;
+const { Sensor } = db;
 
 /*
  ***************************************
- * Post greenhouse
+ * Post sensor
  * *************************************
 */
-router.post('/greenhouses', async (req, res) => {
+router.post('/sensors', async (req, res) => {
   // Request Validation
   req.check('name', 'Name field is empty.').notEmpty();
-  req.check('uid', 'User ID field is empty.').notEmpty();
+  req.check('mid', 'Microcontroller ID field is empty.').notEmpty();
   const errors = req.validationErrors();
   if (errors) {
     const messages = [];
@@ -27,24 +27,24 @@ router.post('/greenhouses', async (req, res) => {
     });
   }
 
-  return Greenhouse.sync().then(async () => {
-    const greenhouseData = req.body;
+  return Sensor.sync().then(async () => {
+    const sensorData = req.body;
     try {
-      const postGreenhouse = await Greenhouse.create(greenhouseData);
-      if (!postGreenhouse) {
+      const postSensor = await Sensor.create(sensorData);
+      if (!postSensor) {
         return res.json({
           success: false,
-          message: "Greenhouse couldn't be posted."
+          message: "Sensor couldn't be posted."
         });
       }
       return res.json({
         success: true,
-        message: 'Greenhouse successfully registered.'
+        message: 'Sensor successfully registered.'
       });
     } catch (e) {
       return res.json({
         success: false,
-        message: "Greenhouse couldn't be posted.",
+        message: "Sensor couldn't be posted.",
         error: e
       });
     }
@@ -53,28 +53,28 @@ router.post('/greenhouses', async (req, res) => {
 
 /*
  ***************************************
- * Get Greenhouses List
+ * Get Sensors List
  * *************************************
 */
-router.get('/greenhouses', (req, res) =>
-  Greenhouse.sync().then(async () => {
+router.get('/sensors', (req, res) =>
+  Sensor.sync().then(async () => {
     try {
-      const greenhouses = await Greenhouse.findAll();
-      if (!greenhouses) {
+      const sensors = await Sensor.findAll();
+      if (!sensors) {
         return res.json({
           success: false,
-          message: "Greenhouses couldn't be fetched."
+          message: "Sensors couldn't be fetched."
         });
       }
       return res.json({
         success: true,
-        message: 'Greenhouses successfully fetched.',
-        data: greenhouses
+        message: 'Sensors successfully fetched.',
+        data: sensors
       });
     } catch (e) {
       return res.json({
         success: false,
-        message: "Greenhouses couldn't be fetched.",
+        message: "Sensors couldn't be fetched.",
         error: e
       });
     }
@@ -83,28 +83,28 @@ router.get('/greenhouses', (req, res) =>
 
 /*
  ***************************************
- * Get Single Greenhouses
+ * Get Single Sensors
  * *************************************
 */
-router.get('/greenhouses/:id', (req, res) =>
-  Greenhouse.sync().then(async () => {
+router.get('/sensors/:id', (req, res) =>
+  Sensor.sync().then(async () => {
     try {
-      const greenhouses = await Greenhouse.findOne({ where: { id: req.params.id } });
-      if (!greenhouses) {
+      const sensors = await Sensor.findOne({ where: { id: req.params.id } });
+      if (!sensors) {
         return res.json({
           success: false,
-          message: "Greenhouse couldn't be fetched."
+          message: "Sensor couldn't be fetched."
         });
       }
       return res.json({
         success: true,
-        message: 'Greenhouse successfully fetched.',
-        data: greenhouses
+        message: 'Sensor successfully fetched.',
+        data: sensors
       });
     } catch (e) {
       return res.json({
         success: false,
-        message: "Greenhouse couldn't be fetched.",
+        message: "Sensor couldn't be fetched.",
         error: e
       });
     }
@@ -113,26 +113,26 @@ router.get('/greenhouses/:id', (req, res) =>
 
 /*
  ***************************************
- * delete greenhouse
+ * delete sensor
  * *************************************
 */
-router.delete('/greenhouses/:id', async (req, res) => {
+router.delete('/sensors/:id', async (req, res) => {
   try {
-    const deleteGreenhouse = await Greenhouse.destroy({ where: { id: req.params.id } });
-    if (!deleteGreenhouse) {
+    const deleteSensor = await Sensor.destroy({ where: { id: req.params.id } });
+    if (!deleteSensor) {
       return res.json({
         success: false,
-        message: "Greenhouse couldn't be deleted."
+        message: "Sensor couldn't be deleted."
       });
     }
     return res.json({
       success: true,
-      message: 'Greenhouse successfully deleted.'
+      message: 'Sensor successfully deleted.'
     });
   } catch (e) {
     return res.json({
       success: false,
-      message: "Greenhouse couldn't be deleted.",
+      message: "Sensor couldn't be deleted.",
       error: e
     });
   }
@@ -140,32 +140,32 @@ router.delete('/greenhouses/:id', async (req, res) => {
 
 /*
  ***************************************
- * Update greenhouse
+ * Update sensor
  * *************************************
 */
-router.put('/greenhouses/:id', async (req, res) => {
+router.put('/sensors/:id', async (req, res) => {
   try {
-    const updatedGreenhouse = await Greenhouse.update(
+    const updatedSensor = await Sensor.update(
       { firstname: 'Milan Poudel' },
       { where: { id: req.params.id } }
     );
-    if (!updatedGreenhouse) {
+    if (!updatedSensor) {
       return res.json({
         success: false,
-        message: "Greenhouse couldn't be updated."
+        message: "Sensor couldn't be updated."
       });
     }
-    return Greenhouse.findOne({ where: { id: req.params.id } }).then(greenhouse =>
+    return Sensor.findOne({ where: { id: req.params.id } }).then(sensor =>
       res.json({
         success: true,
-        message: 'Greenhouse successfully updated.',
-        data: greenhouse
+        message: 'Sensor successfully updated.',
+        data: sensor
       })
     );
   } catch (e) {
     return res.json({
       success: false,
-      message: "Greenhouse couldn't be updated.",
+      message: "Sensor couldn't be updated.",
       error: e
     });
   }
